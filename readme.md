@@ -25,13 +25,11 @@ GCGUA...	CGCAU...
 
 Each sequence is a contiguous string of `A,U,C,G`; the `STOP` token is appended implicitly during tokenization.
 
-
 rna_transformer/
-│
-├── data.py            # loading & preparing Dataset objects
-├── tokenizer.py       # vocab definition & Fast tokenizer
-├── pos_encoding.py    # sinusoidal positional encoding
-├── model.py           # NucConfig + NucTransformer classes
-├── train.py           # `main()` entrypoint: Trainer setup & run
-└── utils.py           # seed setting
+├── data.py          # loading & preparing Dataset objects
+├── tokenizer.py     # vocab definition & Fast tokenizer
+├── pos_encoding.py  # sinusoidal positional encoding
+├── model.py         # NucConfig + NucTransformer classes
+├── train.py         # main() entrypoint: Trainer setup & run
+└── utils.py         # seed setting
 
