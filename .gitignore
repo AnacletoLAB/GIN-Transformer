@@ -1,7 +1,12 @@
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+
+# File temporanei e locali
+*.txt
+blast*
 
 # C extensions
 *.so
@@ -35,6 +40,7 @@ MANIFEST
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
+
 
 # Unit test / coverage reports
 htmlcov/
@@ -192,3 +198,12 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+# Dataset
+data/
+*.pkl
+*.png
+
+# Checkpoint
+ckpt/
+
