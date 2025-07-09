@@ -70,9 +70,6 @@ def tokenize_batch(batch):
     else:
         tgt_texts = [x + tokenizer.eos_token for x in batch[tgt_key]]
     
-    print("Tutti i token della prima sequenza target:", tokenizer.encode(tgt_texts[0]))
-    print("Tutti i token della prima sequenza source:", tokenizer.encode(src_texts[0]))
-    
     # use the base class encode_batch
     enc = tokenizer(src_texts, padding="max_length", truncation=True, max_length=128, return_tensors="pt")   # max_length è stato modificato
     tgt_enc = tokenizer(tgt_texts, padding="max_length", truncation=True, max_length=128, return_tensors="pt")   # max_length è stato modificato
