@@ -56,13 +56,31 @@ tokenizer = NucTokenizer()
 
 
 def tokenize_batch(batch):
+    src_key = "source" if "source" in batch else "seq1"
+    tgt_key = "target" if "target" in batch else "seq2"
+    
     # append eos to each string of tokens
-    src_texts = ["".join(x) + tokenizer.eos_token for x in batch["source"]]
-    tgt_texts = ["".join(x) + tokenizer.eos_token for x in batch["target"]]
-
+    if isinstance(batch[src_key][0], list):
+        src_texts = ["".join(x + [tokenizer.eos_token]) for x in batch[src_key]]
+    else:
+        src_texts = [x + tokenizer.eos_token for x in batch[src_key]]
+           
+    if isinstance(batch[tgt_key][0], list):
+        tgt_texts = ["".join(x + [tokenizer.eos_token]) for x in batch[tgt_key]]
+    else:
+        tgt_texts = [x + tokenizer.eos_token for x in batch[tgt_key]]
+    
+    print("Tutti i token della prima sequenza target:", tokenizer.encode(tgt_texts[0]))
+    print("Tutti i token della prima sequenza source:", tokenizer.encode(src_texts[0]))
+    
     # use the base class encode_batch
-    enc = tokenizer(src_texts, padding=True, return_tensors="pt")
-    tgt_enc = tokenizer(tgt_texts, padding=True, return_tensors="pt")
+    enc = tokenizer(src_texts, padding="max_length", truncation=True, max_length=128, return_tensors="pt")   # max_length è stato modificato
+    tgt_enc = tokenizer(tgt_texts, padding="max_length", truncation=True, max_length=128, return_tensors="pt")   # max_length è stato modificato
 
     enc["labels"] = tgt_enc["input_ids"]
+    
+    # mostra le dimensioni dei tensori per ogni batch.
+    # print("SRC shape:", enc["input_ids"].shape)
+    # print("TGT shape:", tgt_enc["input_ids"].shape)
+    # print("LABELS shape:", enc["labels"].shape)
     return enc
