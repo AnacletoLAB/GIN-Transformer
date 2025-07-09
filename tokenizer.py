@@ -79,8 +79,7 @@ def tokenize_batch(batch):
 
     enc["labels"] = tgt_enc["input_ids"]
     
-    # mostra le dimensioni dei tensori per ogni batch.
-    # print("SRC shape:", enc["input_ids"].shape)
-    # print("TGT shape:", tgt_enc["input_ids"].shape)
-    # print("LABELS shape:", enc["labels"].shape)
+   
     return enc
+
+    
