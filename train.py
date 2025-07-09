@@ -23,7 +23,7 @@ warnings.filterwarnings("ignore", message="mtime may not be reliable on this fil
 # in modo lineare (o secondo lo scheduler che hai impostato: nel tuo caso, cosine)
 
 def main(
-    train_file="data/dry_run/train_final.tsv", valid_file="data/dry_run/validation_final.tsv",
+    train_file="data/dry_run/train_final.tsv", valid_file="data/dry_run/validation_raw.tsv",
     output_dir="ckpt/dry_run", logging_dir="ckpt/dry_run/logs",
     learning_rate=3e-5, train_batch_size=32, eval_batch_size=32,
     num_epochs=20, bf16=True, grad_acc_steps=2, warmup_steps=1000,
@@ -79,8 +79,7 @@ def main(
 
     # --------------------------------------------------------------------------------------------------------
     
-    # Validazione del modello con validation_raw oppure no_match_validation
-    # cambiare qui il nome del file
+    # Validazione del modello con validation_raw e no_match_validation
     name = "no_match_validation.tsv"
     filename = "data/dry_run/"+name
     df_final = pd.read_csv(filename, sep="\t")
@@ -89,7 +88,18 @@ def main(
     final_ds = Dataset.from_pandas(df_final).map(tokenize_batch, batched=True)
     final_metrics = trainer.evaluate(eval_dataset=final_ds)
     print()
-    print("Risultati validazione finale:", final_metrics)
+    print(f"Risultati validazione finale su {name}:", final_metrics)
+    print()
+
+    name = "validation_raw.tsv"
+    filename = "data/dry_run/"+name
+    df_final = pd.read_csv(filename, sep="\t")
+    basename = os.path.basename(filename)
+    print(f"Validazione finale su {basename}")
+    final_ds = Dataset.from_pandas(df_final).map(tokenize_batch, batched=True)
+    final_metrics = trainer.evaluate(eval_dataset=final_ds)
+    print()
+    print(f"Risultati validazione finale su {name}:", final_metrics)
     print()
 
 if __name__=="__main__":
