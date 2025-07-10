@@ -71,8 +71,8 @@ def tokenize_batch(batch):
         tgt_texts = [x + tokenizer.eos_token for x in batch[tgt_key]]
     
     # use the base class encode_batch
-    enc = tokenizer(src_texts, padding="max_length", truncation=True, max_length=128, return_tensors="pt")   # max_length è stato modificato
-    tgt_enc = tokenizer(tgt_texts, padding="max_length", truncation=True, max_length=128, return_tensors="pt")   # max_length è stato modificato
+    enc = tokenizer(src_texts, padding="max_length", truncation=True, max_length=256, return_tensors="pt")   # max_length è stato modificato
+    tgt_enc = tokenizer(tgt_texts, padding="max_length", truncation=True, max_length=256, return_tensors="pt")   # max_length è stato modificato
 
     enc["labels"] = tgt_enc["input_ids"]
     

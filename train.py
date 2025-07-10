@@ -37,7 +37,7 @@ def main(
     valid_ds = valid_ds.map(tokenize_batch, batched=True)
 
     # model & config
-    config = NucConfig(d_model=64, nhead=4, dim_feedforward=128, dropout=0.1, max_len=128) # QUI
+    config = NucConfig(d_model=64, nhead=4, dim_feedforward=128, dropout=0.1, max_len=256) # QUI
     model  = NucTransformer(config)
 
     # training args
@@ -79,7 +79,8 @@ def main(
 
     # --------------------------------------------------------------------------------------------------------
     
-    # Validazione del modello con validation_raw e no_match_validation
+    # confronto tra due versioni pulite del validation set (final e filtered)
+    print()
     name = "no_match_validation.tsv"
     filename = "data/dry_run/"+name
     df_final = pd.read_csv(filename, sep="\t")
@@ -91,7 +92,7 @@ def main(
     print(f"Risultati validazione finale su {name}:", final_metrics)
     print()
 
-    name = "validation_raw.tsv"
+    name = "validation_final.tsv"
     filename = "data/dry_run/"+name
     df_final = pd.read_csv(filename, sep="\t")
     basename = os.path.basename(filename)
