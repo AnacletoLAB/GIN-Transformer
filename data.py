@@ -1,12 +1,4 @@
 from datasets import Dataset
-'''
-def load_pairs_tsv(path: str):
-    """Yields dicts {'source': List[str], 'target': List[str]} from TSV."""
-    with open(path) as f:
-        for line in f:
-            src, tgt = line.strip().split("\t")
-            yield {"source": list(src), "target": list(tgt)}
-'''
 
 
 def load_pairs_tsv(path: str):

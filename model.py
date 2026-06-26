@@ -3,8 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from transformers import PreTrainedModel, PretrainedConfig
 from pos_encoding import PositionalEncoding
-# from tokenizer import tokenizer             usato in 3-mer senza overlapping
-from tokenizer import tokenizer, tokenize_batch, detokenize_batch     # usato nell'ultima versione di 1-mer
+from tokenizer import tokenizer
 
 
 class NucConfig(PretrainedConfig):
@@ -160,22 +159,7 @@ class NucTransformer(PreTrainedModel):
         probs_filtered = probs_filtered / probs_filtered.sum(dim=-1, keepdim=True)
         
         return probs_filtered
-        """
-        Generazione autoregressiva di sequenze di nucleotidi.
-        
-        Args:
-            input_ids: Tensor di input (batch_size, seq_len)
-            attention_mask: Maschera di attenzione opzionale
-            max_new_tokens: Massimo numero di nuovi token da generare
-            min_new_tokens: Minimo numero di token prima di permettere EOS
-            temperature: Temperatura per il sampling (default: 1.0)
-            top_p: Soglia per nucleus sampling (default: 1.0, disabilitato)
-            top_k: Numero di top token per il sampling (default: 30)
-            verbose: Se True, stampa informazioni di debug
-        
-        Returns:
-            Tensor con i token generati (batch_size, generated_length)
-        """
+
     @torch.no_grad()
     def generate(
         self,
@@ -192,7 +176,22 @@ class NucTransformer(PreTrainedModel):
         max_length=None,
         min_length=None,
         verbose=False
-    ):       
+    ):
+        """Generazione autoregressiva di sequenze di nucleotidi.
+
+        Args:
+            input_ids: tensor di input (batch_size, seq_len)
+            attention_mask: maschera di attenzione opzionale
+            max_new_tokens: massimo numero di nuovi token da generare
+            min_new_tokens: minimo numero di token prima di permettere EOS
+            temperature: temperatura per il sampling (default: 1.0)
+            top_p: soglia per nucleus sampling (default: 1.0, disabilitato)
+            top_k: numero di top token per il sampling (default: 1)
+            verbose: se True, stampa informazioni di debug
+
+        Returns:
+            Tensor con i token generati (batch_size, generated_length)
+        """
         self.eval()
         device = input_ids.device
         batch_size = input_ids.size(0)
@@ -224,7 +223,6 @@ class NucTransformer(PreTrainedModel):
             max_length = None
 
         max_new_tokens = max(1, int(max_new_tokens))
-        # print(f"[DEBUG generate()] max_new_tokens effettivo = {max_new_tokens}")
         min_new_tokens = max(0, int(min_new_tokens))
         
         if verbose:
@@ -259,7 +257,6 @@ class NucTransformer(PreTrainedModel):
         finished = torch.zeros(batch_size, dtype=torch.bool, device=device)
         
         # Generazione autoregressiva
-        # Generazione autoregressiva — corretta
         initial_len = generated.size(1)
         target_total_len = initial_len + max_new_tokens
         
