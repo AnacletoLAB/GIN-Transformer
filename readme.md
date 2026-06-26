@@ -1,7 +1,7 @@
 **Tutorial: Training a Transformer Encoder–Decoder on Interacting RNA Pairs**
 
 **Overview**
-This tutorial shows how to train a transformer encoder–decoder from scratch on pairs of nucleotide sequences (interacting RNA couples). We use 6 tokens: `A`, `U`, `C`, `G`, `PAD`, `EOS`, `UNK`, `BOS`. The model’s number of heads, layers and hidden size are configurable. We add standard sinusoidal positional encoding. We train and validate via the Hugging Face `Trainer` API.
+This tutorial shows how to train a transformer encoder–decoder from scratch on pairs of nucleotide sequences (interacting RNA couples). We use 8 tokens: `A`, `U`, `C`, `G`, `PAD`, `EOS`, `UNK`, `BOS`. The model’s number of heads, layers and hidden size are configurable. We add standard sinusoidal positional encoding. We train and validate via the Hugging Face `Trainer` API.
 
 ---
 
